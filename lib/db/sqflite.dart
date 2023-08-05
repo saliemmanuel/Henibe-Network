@@ -1,5 +1,7 @@
 import 'package:bheya_network_example/db/models/data_field.dart';
+import 'package:bheya_network_example/provider/app_provider.dart';
 import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 Database? db;
@@ -101,9 +103,16 @@ deleteUserAccount(String? id) async {
 }
 
 // Suppression complet*
-Future<int> deleteAccount() async {
-  print("deconnexio");
-  return await db!.delete("data");
+deleteDatabase(var context) async {
+  await db!.delete("data").then(
+    (value) {
+      Provider.of<AppProvider>(context, listen: false).providerListHistorique();
+      // Future.delayed(const Duration(seconds: 3), () {
+      //   Provider.of<AppProvider>(context, listen: false)
+      //       .providerListHistorique();
+      // });
+    },
+  );
 }
 
 // Comptage

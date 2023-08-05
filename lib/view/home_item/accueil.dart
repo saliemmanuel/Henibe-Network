@@ -33,12 +33,16 @@ class _AccueilState extends State<Accueil> {
                       value.long == null
                           ? 14.3949691
                           : double.parse(value.long.toString())),
-                  zoom: 13.20);
+                  zoom: 16.20);
               return ListView(
                 children: [
                   Container(
                     margin: const EdgeInsets.all(10.0),
-                    height: 230.0,
+                    height: 260.0,
+                    padding: const EdgeInsets.all(3.0),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        borderRadius: BorderRadius.circular(23.0)),
                     width: size.width,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(23.0),
@@ -60,7 +64,6 @@ class _AccueilState extends State<Accueil> {
                               ),
                             },
                             initialCameraPosition: initialCameraPosition,
-                            mapType: MapType.terrain,
                             onMapCreated: (controller) {},
                           ),
                         ],

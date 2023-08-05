@@ -37,7 +37,7 @@ Future simpleDialogueCardSansTitle({String? msg, BuildContext? context}) {
       });
 }
 
-Future errorDialogueCard({String? title, String? msg, BuildContext? context}) {
+Future errorDialogueCard({String? msg, BuildContext? context}) {
   return showDialog(
       barrierDismissible: false,
       context: context!,

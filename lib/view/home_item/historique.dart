@@ -1,6 +1,6 @@
-import 'package:bheya_network_example/db/models/data_field.dart';
 import 'package:bheya_network_example/db/sqflite.dart';
 import 'package:bheya_network_example/provider/app_provider.dart';
+import 'package:bheya_network_example/widget/custom_dialogue_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../widget/custom_text.dart';
@@ -27,18 +27,24 @@ class _HistoriqueState extends State<Historique> {
             menuList: [
               PopupMenuItem(
                   value: "Telecharger_csv",
-                  height: 15.0,
+                  height: 8.0,
                   child: ListTile(
                     leading: Icon(Icons.save_alt_rounded),
                     title: Text("Télécharger (.csv)"),
                   )),
-              PopupMenuDivider(),
               PopupMenuItem(
-                  value: "Telecharger_xlsx",
-                  height: 15.0,
+                  value: "Rapport",
+                  height: 8.0,
                   child: ListTile(
                     leading: Icon(Icons.upload_file_sharp),
                     title: Text("Rapport"),
+                  )),
+              PopupMenuItem(
+                  value: "Effacer",
+                  height: 8.0,
+                  child: ListTile(
+                    leading: Icon(Icons.delete),
+                    title: Text("Effacer"),
                   )),
             ],
             icon: Icon(Icons.more_vert),
@@ -49,7 +55,7 @@ class _HistoriqueState extends State<Historique> {
         child: Consumer<AppProvider>(
           builder: (context, value, child) {
             if (value.listHistorique == null) {
-              return const Center(child:  CustomText("Chargement..."));
+              return const Center(child: CustomText("Chargement..."));
             } else {
               return ListView.builder(
                 itemCount: value.listHistorique == null
@@ -116,21 +122,25 @@ class PopUpMen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
-      onSelected: (value) {
-        if (value == "Telecharger_xlsx") {
-          Provider.of<AppProvider>(context, listen: false)
-              .exportToExcel(context);
-        }
-        if (value == "Telecharger_pdf") {}
-        if (value == "Telecharger_csv") {
-          Provider.of<AppProvider>(context, listen: false).generateCSV(context);
-        }
-      },
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      itemBuilder: ((context) => menuList),
-      icon: icon,
-    );
+        onSelected: (value) {
+          if (value == "Telecharger_csv") {
+            Provider.of<AppProvider>(context, listen: false)
+                .generateCSV(context);
+          }
+          if (value == "Rapport") {}
+          if (value == "Effacer") {
+            customDialogue(
+                context, "Message", "Vous êtez sur de vouloire éffacer",
+                onPressed: () {
+              deleteDatabase(context);
+              Navigator.pop(context);
+            }, text: "Confirmer");
+          }
+        },
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        itemBuilder: ((context) => menuList),
+        icon: icon);
   }
 }

@@ -203,7 +203,9 @@ class AppProvider extends ChangeNotifier {
       ServiceApi.fetchIPInformation(context);
       if (cellsResponse != null) {
         providerInsertDataField(data: cellsResponse!.primaryCellList![0]);
+        providerListHistorique();
       }
+
       await initSimCardsData();
       await initPhoneInfo();
       await providerWifiCellularLevelStrength();
@@ -267,43 +269,12 @@ class AppProvider extends ChangeNotifier {
     }
   }
 
-  // Pour l'exportation en fichier excel
-  void exportToExcel(var context) async {
-    final excel = Excel.createExcel();
-    final Sheet sheet = excel[excel.getDefaultSheet()!];
-    for (var row = 0; row < 100; row++) {
-      sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
-          .value = 'FLUTTER';
-
-      sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row))
-          .value = 'is';
-
-      sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: row))
-          .value = "Google's";
-
-      sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: row))
-          .value = "UI";
-
-      sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: row))
-          .value = "toolkit";
-    }
-
-    var fileBytes = excel.save();
-    var fileName = "henibenetwork_log${DateTime.now()}.xlsx";
-    saveFile(fileBytes!, fileName, context);
-  }
-
   Future<void> generateCSV(context) async {
     List<List<String>> csvData = [
       // headers
       <String>[
         'year',
-        'Coach',
+        'month',
         'month',
         'day',
         'hour',
@@ -312,6 +283,7 @@ class AppProvider extends ChangeNotifier {
         'brand',
         'device',
         'model',
+        'latitude',
         'longitude',
         'altitude',
         'userSpeed',
@@ -365,7 +337,7 @@ class AppProvider extends ChangeNotifier {
       for (int i = 0; i < listHistorique!.length; i++)
         [
           "${listHistorique![i]['year']}",
-          "${listHistorique![i]['Coach']}",
+          "${listHistorique![i]['month']}",
           "${listHistorique![i]['month']}",
           "${listHistorique![i]['day']}",
           "${listHistorique![i]['hour']}",
@@ -374,6 +346,7 @@ class AppProvider extends ChangeNotifier {
           "${listHistorique![i]['brand']}",
           "${listHistorique![i]['device']}",
           "${listHistorique![i]['model']}",
+          "${listHistorique![i]['latitude']}",
           "${listHistorique![i]['longitude']}",
           "${listHistorique![i]['altitude']}",
           "${listHistorique![i]['userSpeed']}",
