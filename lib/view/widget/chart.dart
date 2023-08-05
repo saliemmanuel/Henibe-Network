@@ -39,7 +39,7 @@ class _ChartState extends State<Chart> {
       LiveData(5, -80),
       LiveData(6, -76),
       LiveData(7, -75),
-      LiveData(8, -50),
+      LiveData(8, -80),
       LiveData(9, -85),
       LiveData(10, -80),
       LiveData(11, -75),

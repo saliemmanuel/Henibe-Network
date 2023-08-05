@@ -1,3 +1,5 @@
+import 'package:bheya_network_example/db/models/data_field.dart';
+import 'package:bheya_network_example/db/sqflite.dart';
 import 'package:bheya_network_example/provider/app_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +15,7 @@ class Historique extends StatefulWidget {
 class _HistoriqueState extends State<Historique> {
   @override
   Widget build(BuildContext context) {
+    Provider.of<AppProvider>(context, listen: false).providerListHistorique();
     return Scaffold(
       appBar: AppBar(
         title: const CustomText("Historique",
@@ -23,32 +26,11 @@ class _HistoriqueState extends State<Historique> {
           const PopUpMen(
             menuList: [
               PopupMenuItem(
-                  value: "Sauvegarder",
-                  height: 15.0,
-                  child: ListTile(
-                    leading: Icon(Icons.save),
-                    title: Text("Sauvegarder"),
-                  )),
-              PopupMenuItem(
                   value: "Telecharger_csv",
                   height: 15.0,
                   child: ListTile(
                     leading: Icon(Icons.save_alt_rounded),
                     title: Text("Télécharger (.csv)"),
-                  )),
-              PopupMenuItem(
-                  value: "Telecharger_pdf",
-                  height: 15.0,
-                  child: ListTile(
-                    leading: Icon(Icons.save_alt_rounded),
-                    title: Text("Télécharger (.pdf)"),
-                  )),
-              PopupMenuItem(
-                  value: "Telecharger_xlsx",
-                  height: 15.0,
-                  child: ListTile(
-                    leading: Icon(Icons.save_alt_rounded),
-                    title: Text("Télécharger (.xlsx)"),
                   )),
               PopupMenuDivider(),
               PopupMenuItem(
@@ -64,72 +46,62 @@ class _HistoriqueState extends State<Historique> {
         ],
       ),
       body: Scrollbar(
-        child: SingleChildScrollView(
-          child: Consumer<AppProvider>(
-            builder: (context, value, child) {
-              return Column(
-                  children: List.generate(
-                      55,
-                      (index) => Card(
-                            child: ListTile(
-                              leading: const Icon(Icons.history),
-                              title: CustomText(sendSpecifiqueInfo(getTypeResau(
-                                  value.cellsResponse!.primaryCellList![0]))),
-                            ),
-                          )));
-            },
-          ),
+        child: Consumer<AppProvider>(
+          builder: (context, value, child) {
+            if (value.listHistorique == null) {
+              return const Center(child:  CustomText("Chargement..."));
+            } else {
+              return ListView.builder(
+                itemCount: value.listHistorique == null
+                    ? 0
+                    : value.listHistorique!.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.history),
+                      title: sendSpecifiqueInfo(value.listHistorique![index]),
+                    ),
+                  );
+                },
+              );
+            }
+          },
         ),
       ),
     );
   }
 
-  getTypeResau(var data) {
-    if (data.type == "gsm".toUpperCase()) {
-      return data.gsm;
-    }
-    if (data.type == "lte".toUpperCase()) {
-      return data.lte;
-    }
-    if (data.type == "nr".toUpperCase()) {
-      return data.nr;
-    }
-    if (data.type == "tdscdma".toUpperCase()) {
-      return data.tdscdma;
-    }
-    if (data.type == "wcdma".toUpperCase()) {
-      return data.wcdma;
-    }
-    if (data.type == "cdma".toUpperCase()) {
-      return data.cdma;
-    }
-  }
-
   sendSpecifiqueInfo(var data) {
     var date =
-        "${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}-${DateTime.now().minute}-${DateTime.now().second}";
-    if (data.type == "gsm".toUpperCase()) {
-      return "${data.type} DBm: ${data.signalGSM.dbm}, Asu: ${data.signalGSM.dbm}, iso: ${data.network.iso}, mnc: ${data.network.mnc}, mcc: ${data.network.mcc} $date";
+        "${data['year']}-${data['month']}-${data['day']} ${data['hour']}:${data['minutes']}:${data['seconds']}";
+    if (data["networktype"] == "gsm".toUpperCase()) {
+      return CustomText(
+          "${data["networktype"]} DBm: ${data["dBm"]}, Asu: ${data["dBm"]},  mnc: ${data["mnc"]}, mcc: ${data["mcc"]} $date");
     }
 
-    if (data.type == "lte".toUpperCase()) {
-      return "RSRQ: ${data.signalLTE.rsrq}, RSRP: ${data.signalLTE.rsrp}, iso: ${data.network.iso}, mnc: ${data.network.mnc}, mcc: ${data.network.mcc} $date";
+    if (data["networktype"] == "lte".toUpperCase()) {
+      return CustomText(
+          "${data["networktype"]} RSRQ: ${data["rSRQ"]}, RSRP: ${data["rSRP"]},  mnc: ${data["mnc"]}, mcc: ${data["mcc"]} $date");
     }
 
-    if (data.type == "nr".toUpperCase()) {
-      return "DBm: ${data.signalNR.dbm}, iso: ${data.network.iso}, mnc: ${data.network.mnc}, mcc: ${data.network.mcc} $date";
+    if (data["networktype"] == "nr".toUpperCase()) {
+      return CustomText(
+          "${data["networktype"]} DBm: ${data["dBm"]},  mnc: ${data["mnc"]}, mcc: ${data["mcc"]} $date");
     }
 
-    if (data.type == "tdscdma".toUpperCase()) {
-      return "Dbm: ${data.signalTDSCDMA.dbm}, iso: ${data.network.iso}, mnc: ${data.network.mnc}, mcc: ${data.network.mcc} $date";
+    if (data["networktype"] == "tdscdma".toUpperCase()) {
+      return CustomText(
+          "${data["networktype"]} Dbm: ${data["dBm"]},  mnc: ${data["mnc"]}, mcc: ${data["mcc"]}  $date");
     }
 
-    if (data.type == "wcdma".toUpperCase()) {
-      return "DBm: ${data.signalWCDMA.dbm}, iso: ${data.network.iso}, mnc: ${data.network.mnc}, mcc: ${data.network.mcc} $date";
+    if (data["networktype"] == "wcdma".toUpperCase()) {
+      return CustomText(
+          "${data["networktype"]} Dbm: ${data["dBm"]},  mnc: ${data["mnc"]}, mcc: ${data["mcc"]}  $date");
     }
 
-    if (data.type == "cdma".toUpperCase()) {
-      return "Dbm: ${data.signalCDMA.dbm}, iso: ${data.network.iso}, mnc: ${data.network.mnc}, mcc: ${data.network.mcc} $date";
+    if (data["networktype"] == "cdma".toUpperCase()) {
+      return CustomText(
+          "${data["networktype"]} Dbm: ${data.signalCDMA.dbm},  mnc: ${data["mnc"]}, mcc: ${data["mcc"]}   $date");
     }
     setState(() {});
   }
@@ -150,7 +122,9 @@ class PopUpMen extends StatelessWidget {
               .exportToExcel(context);
         }
         if (value == "Telecharger_pdf") {}
-        if (value == "Telecharger_csv") {}
+        if (value == "Telecharger_csv") {
+          Provider.of<AppProvider>(context, listen: false).generateCSV(context);
+        }
       },
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),

@@ -9,7 +9,9 @@ import '../config/palette.dart';
 import 'home_item/profil.dart';
 
 class HomeNetworkStation extends StatefulWidget {
-  const HomeNetworkStation({super.key});
+  final Function? onStart;
+
+  const HomeNetworkStation({super.key, required this.onStart});
 
   @override
   State<HomeNetworkStation> createState() => _HomeNetworkStationState();
@@ -17,14 +19,6 @@ class HomeNetworkStation extends StatefulWidget {
 
 class _HomeNetworkStationState extends State<HomeNetworkStation> {
   var topIndex = 0;
-
-  var item = [
-    const Accueil(),
-    const Cellule(),
-    const Graphique(),
-    const Historique(),
-    const Profil()
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +29,13 @@ class _HomeNetworkStationState extends State<HomeNetworkStation> {
     Provider.of<AppProvider>(context, listen: false).providerCheckGps();
     Provider.of<AppProvider>(context, listen: false).testSpedd();
     return Scaffold(
-      body: item[topIndex],
+      body: [
+        const Accueil(),
+        const Cellule(),
+        const Graphique(),
+        const Historique(),
+        Profil(onStart: widget.onStart)
+      ][topIndex],
       bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.shifting,
           enableFeedback: true,

@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 
-import '../../provider/app_provider.dart';
+import '../../config/palette.dart';
 import '../../widget/custom_text.dart';
 
 class Profil extends StatefulWidget {
-  const Profil({super.key});
+  final Function? onStart;
+  const Profil({super.key, required this.onStart});
 
   @override
   State<Profil> createState() => _ProfilState();
 }
 
 class _ProfilState extends State<Profil> {
+  String text = "Arrêter le service";
+  var isRunning = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +41,35 @@ class _ProfilState extends State<Profil> {
             ],
             icon: Icon(Icons.more_vert),
           ),
+        ],
+      ),
+      body: ListView(
+        children: [
+          // Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: Card(
+          //       color: !isRunning ? Colors.red : Palette.primaryColor,
+          //       child: MaterialButton(
+          //           child: Text(text,
+          //               style: const TextStyle(
+          //                   fontSize: 18.0, color: Colors.white)),
+          //           onPressed: () async {
+          //             final service = FlutterBackgroundService();
+          //             var isRunning = await service.isRunning();
+          //             if (isRunning) {
+          //               service.invoke("stopService");
+          //             } else {
+          //               service.startService();
+          //             }
+
+          //             if (!isRunning) {
+          //               text = "Arrêter le service";
+          //             } else {
+          //               text = "Lancer le service";
+          //             }
+          //             setState(() {});
+          //           })),
+          // )
         ],
       ),
     );

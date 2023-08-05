@@ -10,7 +10,9 @@ import 'home_network_station.dart';
 
 class SplashScreen extends StatefulWidget {
   final bool? userIsLog;
-  const SplashScreen({Key? key, this.userIsLog}) : super(key: key);
+  final Function? onStart;
+  const SplashScreen({Key? key, this.userIsLog, required this.onStart})
+      : super(key: key);
 
   @override
   SplashScreenState createState() => SplashScreenState();
@@ -23,13 +25,15 @@ class SplashScreenState extends State<SplashScreen> {
     Timer(const Duration(seconds: 3), () async {
       await Provider.of<AppProvider>(context, listen: false)
           .providerCheckPermission();
-      await pushNewPageRemoveUntil(const HomeNetworkStation(), context);
+      await pushNewPageRemoveUntil(
+          HomeNetworkStation(onStart: widget.onStart), context);
+      await Provider.of<AppProvider>(context, listen: false)
+          .providerDateTime(context);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<AppProvider>(context, listen: false).providerDateTime(context);
     return Scaffold(
       body: Center(
         child: Stack(

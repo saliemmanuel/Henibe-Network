@@ -54,6 +54,7 @@ dependencies:
   excel: ^2.1.0
   csv: ^5.0.2
   sqflite: ^2.3.0
+  flutter_background_service: ^3.0.1
 
 dev_dependencies:
   integration_test:
