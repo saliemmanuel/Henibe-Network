@@ -1,0 +1,174 @@
+ListView(
+        children: [
+          Consumer<AppProvider>(
+            builder: (context, value, child) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(value.signalStrengthPlugin != null
+                        ? "cellStrength : ${value.cellStrength}"
+                        : "GPS is disabled."),
+                    const Divider(),
+                    CustomText(value.signalStrengthPlugin != null
+                        ? "wifiStrength :  ${value.wifiStrength}"
+                        : "GPS is disabled."),
+                    const Divider(),
+                    CustomText(value.carrierInfo != null
+                        ? "VOIP is Actif : ${value.carrierInfo!.allowsVOIP}"
+                        : "Permission is disabled."),
+                    const Divider(),
+                    CustomText(value.carrierInfo != null
+                        ? "Nom du réseau : ${value.carrierInfo!.carrierName}"
+                        : "Permission is disabled."),
+                    const Divider(),
+                    CustomText(value.carrierInfo != null
+                        ? "cid : ${value.carrierInfo!.cid}"
+                        : "Permission is disabled."),
+                    const Divider(),
+                    CustomText(value.carrierInfo != null
+                        ? "isoCountryCode : ${value.carrierInfo!.isoCountryCode}"
+                        : "Permission is disabled."),
+                    const Divider(),
+                    CustomText(value.carrierInfo != null
+                        ? "lac : ${value.carrierInfo!.lac}"
+                        : "Permission is disabled."),
+                    const Divider(),
+                    CustomText(value.carrierInfo != null
+                        ? "mobileCountryCode : ${value.carrierInfo!.mobileCountryCode}"
+                        : "Permission is disabled."),
+                    const Divider(),
+                    CustomText(value.carrierInfo != null
+                        ? "mobileNetworkCode : ${value.carrierInfo!.mobileNetworkCode}"
+                        : "Permission is disabled."),
+                    const Divider(),
+                    CustomText(value.carrierInfo != null
+                        ? "mobileNetworkOperator : ${value.carrierInfo!.mobileNetworkOperator}"
+                        : "Permission is disabled."),
+                    const Divider(),
+                    CustomText(value.carrierInfo != null
+                        ? "networkGeneration : ${value.carrierInfo!.networkGeneration}"
+                        : "Permission is disabled."),
+                    const Divider(),
+                    CustomText(value.carrierInfo != null
+                        ? "radioType : ${value.carrierInfo!.radioType}"
+                        : "Permission is disabled."),
+                    const Divider(),
+                    PrimaryCellWidget(cellsResponse: value.cellsResponse),
+                    NeighboringCellWidget(cellsResponse: value.cellsResponse),
+                  ],
+                ),
+              );
+            },
+          )
+        ],
+      ),
+
+      package com.example.bheya_network
+
+import android.annotation.SuppressLint
+import com.example.bheya_network.core.factory.NetMonsterFactory
+import com.example.bheya_network.core.model.cell.*
+import com.example.bheya_network.models.*
+import com.example.bheya_network.models.cdma.getCdma
+import com.google.gson.Gson
+import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.MethodChannel
+import org.json.JSONObject
+import java.util.*
+
+
+class MainActivity : FlutterActivity() {
+    private val chann = "com.dotdevinc.cell_info"
+    private lateinit var channel: MethodChannel
+
+
+    private val primaryCellList: MutableList<CellType> = ArrayList()
+    private val neighboringCellList: MutableList<CellType> = ArrayList()
+    private val cellDataList: MutableList<CellData> = ArrayList()
+
+    private val primaryCellList2: MutableList<Any> = ArrayList()
+    private val neighboringCellList2 = JSONObject()
+    private val cellDataList2 = JSONObject()
+
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        super.configureFlutterEngine(flutterEngine)
+
+        channel = MethodChannel(flutterEngine.dartExecutor.binaryMessenger, chann)
+
+        channel.setMethodCallHandler { call, result ->
+            if (call.method == "getCellInfo") {
+                val testeMoshi = TesteMoshi("TesteMoshi", "SALI EMMANUE", "On va tester ensemble")
+                var res = requestData()
+                val jso = Gson().toJson(res)
+                result?.success(jso)
+            }
+        }
+    }
+
+
+    val wcdwdc = JSONObject()
+
+    @SuppressLint("MissingPermission")
+    fun requestData(
+    ): JSONObject {
+
+        NetMonsterFactory.get(context).apply {
+            val merged = getCells()
+
+            merged.forEach { cell ->
+                val cellData = CellData()
+                cellData.timestamp = System.currentTimeMillis()
+
+                when (cell) {
+                    is CellCdma -> {
+                        val cellType = CellType()
+                        cellType.cdma = getCdma(cell, cellData)
+                        cellType.type = "CDMA"
+                        primaryCellList2.add(cellType)
+                    }
+                    is CellNr -> {
+                        primaryCellList2.add("NR")
+
+                    }
+                    is CellGsm -> {
+                        primaryCellList2.add("GSM")
+
+                    }
+                    is CellLte -> {
+                        primaryCellList2.add("LTE")
+
+                    }
+                    is CellTdscdma -> {
+                        primaryCellList2.add("TDSCDMA")
+
+                    }
+
+                    is CellWcdma -> {
+                        primaryCellList2.add("WCDMA")
+
+                    }
+
+                    else -> {
+                    }
+                }
+            }
+
+        }
+
+        val cellsResponse = CellsResponse()
+        cellsResponse.neighboringCellList = neighboringCellList
+        cellsResponse.primaryCellList = primaryCellList
+        cellsResponse.cellDataList = cellDataList
+
+
+        wcdwdc.put("neighboringCellList2", Gson().toJson(neighboringCellList2))
+        wcdwdc.put("primaryCellList2", Gson().toJson(primaryCellList2))
+
+        return wcdwdc
+
+    }
+}
+
