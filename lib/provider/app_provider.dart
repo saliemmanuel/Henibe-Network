@@ -419,9 +419,7 @@ class AppProvider extends ChangeNotifier {
           userSpeed: speedMps.toString(),
           networktype: cellsResponse!.primaryCellList![0].type.toString(),
           registrationn: networkGeneration ?? "",
-          connectionStatus: cellsResponse!
-              .primaryCellList![0].gsm!.connectionStatus
-              .toString(),
+          connectionStatus:"PrimaryConnection()",
           operator: simOperator ?? "",
           nci: mobileCountryCode ?? "",
           cid: cid ?? "",
@@ -489,9 +487,7 @@ class AppProvider extends ChangeNotifier {
           userSpeed: speedMps.toString(),
           networktype: cellsResponse!.primaryCellList![0].type.toString(),
           registrationn: networkGeneration ?? "",
-          connectionStatus: cellsResponse!
-              .primaryCellList![0].lte!.connectionStatus
-              .toString(),
+          connectionStatus: "PrimaryConnection()",
           operator: simOperator ?? "",
           nci: mobileCountryCode ?? "",
           cid: cid ?? "",
@@ -565,9 +561,7 @@ class AppProvider extends ChangeNotifier {
           userSpeed: speedMps.toString(),
           networktype: cellsResponse!.primaryCellList![0].type.toString(),
           registrationn: networkGeneration ?? "",
-          connectionStatus: cellsResponse!
-              .primaryCellList![0].nr!.connectionStatus
-              .toString(),
+          connectionStatus: "PrimaryConnection()",
           operator: simOperator ?? "",
           nci: mobileCountryCode ?? "",
           cid: cid ?? "",
@@ -637,9 +631,7 @@ class AppProvider extends ChangeNotifier {
           userSpeed: speedMps.toString(),
           networktype: cellsResponse!.primaryCellList![0].type ?? "",
           registrationn: networkGeneration ?? "",
-          connectionStatus: cellsResponse!
-              .primaryCellList![0].tdscdma!.connectionStatus
-              .toString(),
+          connectionStatus: "PrimaryConnection()",
           operator: simOperator ?? "",
           nci: mobileCountryCode ?? "",
           cid: cid ?? "",
@@ -713,9 +705,7 @@ class AppProvider extends ChangeNotifier {
           userSpeed: speedMps.toString(),
           networktype: cellsResponse!.primaryCellList![0].type ?? "",
           registrationn: networkGeneration ?? "",
-          connectionStatus: cellsResponse!
-              .primaryCellList![0].wcdma!.connectionStatus
-              .toString(),
+          connectionStatus: "PrimaryConnection()",
           operator: simOperator ?? "",
           nci: mobileCountryCode ?? "",
           cid: cid ?? "",
@@ -788,9 +778,7 @@ class AppProvider extends ChangeNotifier {
           userSpeed: speedMps.toString(),
           networktype: cellsResponse!.primaryCellList![0].type ?? "",
           registrationn: networkGeneration ?? "",
-          connectionStatus: cellsResponse!
-              .primaryCellList![0].cdma!.connectionStatus
-              .toString(),
+          connectionStatus: "PrimaryConnection()",
           operator: simOperator ?? "",
           nci: mobileCountryCode ?? "",
           cid: cid ?? "",

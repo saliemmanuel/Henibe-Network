@@ -1,7 +1,6 @@
 import 'package:bheya_network_example/db/sqflite.dart';
 import 'package:bheya_network_example/provider/app_provider.dart';
 import 'package:bheya_network_example/view/home_item/map/map.dart';
-import 'package:bheya_network_example/view/home_item/rapport/rapport.dart';
 import 'package:bheya_network_example/widget/custom_dialogue_card.dart';
 import 'package:bheya_network_example/widget/route.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +44,7 @@ class _HistoriqueState extends State<Historique> {
                   height: 8.0,
                   child: ListTile(
                     leading: Icon(Icons.delete),
-                    title: Text("Effacer"),
+                    title: Text("Tous effacer"),
                   )),
             ],
             icon: Icon(Icons.more_vert),
@@ -122,32 +121,31 @@ class PopUpMen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
-        onSelected: (value) {
-          if (value == "Telecharger_csv") {
-            Provider.of<AppProvider>(context, listen: false)
-                .generateCSV(context);
-          }
-          if (value == "map") {
-            pushNewPage(
-                MapsScreen(
-                    dataForMap: Provider.of<AppProvider>(context, listen: false)
-                        .listHistorique),
-                context);
-          }
-          if (value == "Effacer") {
-            customDialogue(
-                context, "Message", "Vous êtez sur de vouloire éffacer",
-                onPressed: () {
-              deleteDatabase(context);
-              Navigator.pop(context);
-            }, text: "Confirmer");
-          }
-        },
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        itemBuilder: ((context) => menuList),
-        icon: icon);
+    return Consumer<AppProvider>(
+      builder: (context, vall, child) => PopupMenuButton(
+          onSelected: (value) {
+            if (value == "Telecharger_csv") {
+              Provider.of<AppProvider>(context, listen: false)
+                  .generateCSV(context);
+            }
+            if (value == "map") {
+              pushNewPage(
+                  MapsScreen(listHistorique: vall.listHistorique), context);
+            }
+            if (value == "Effacer") {
+              customDialogue(
+                  context, "Message", "Vous êtez sur de vouloire tous éffacer?",
+                  onPressed: () {
+                deleteDatabase(context);
+                Navigator.pop(context);
+              }, text: "Confirmer");
+            }
+          },
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          itemBuilder: ((context) => menuList),
+          icon: icon),
+    );
   }
 }

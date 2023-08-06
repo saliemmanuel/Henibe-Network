@@ -55,8 +55,8 @@ class _ColumnChartState extends State<ColumnChart> {
                       text: "Occurence (%)",
                       textStyle: const TextStyle(fontSize: 10.0)),
                   minimum: 0,
-                  maximum: 40,
-                  interval: 10),
+                  maximum: 100,
+                  interval: 5),
               tooltipBehavior: _tooltip,
               series: <ChartSeries<dynamic, dynamic>>[
                 for (var element in widget.map.keys)

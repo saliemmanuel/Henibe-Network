@@ -1,33 +1,38 @@
-import 'dart:async';
-
 import 'package:bheya_network_example/view/home_item/map/widget/rsrp_widget_map.dart';
 import 'package:bheya_network_example/view/home_item/map/widget/rsrq_widget_map.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../../../widget/custom_text.dart';
 
 class MapsScreen extends StatefulWidget {
-  final dataForMap;
-  const MapsScreen({Key? key, required this.dataForMap}) : super(key: key);
+  final List<dynamic>? listHistorique;
+  const MapsScreen({
+    Key? key,
+    required this.listHistorique,
+  }) : super(key: key);
 
   @override
-  _MapsScreenState createState() => _MapsScreenState();
+  MapsScreenState createState() => MapsScreenState();
 }
 
-class _MapsScreenState extends State<MapsScreen> {
+class MapsScreenState extends State<MapsScreen> {
   var index = 0;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     var page = [
-      RSRPMapScreen(dataForMap: widget.dataForMap),
-      RSRQMapScreen(dataForMap: widget.dataForMap),
+      RSRPMapScreen(dataForMap: widget.listHistorique),
+      RSRQMapScreen(dataForMap: widget.listHistorique),
     ];
     return Scaffold(
         appBar: AppBar(
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text("Map Ether"),
+              const Text("Carte"),
               Row(
                 children: [
                   IconButton(
@@ -47,9 +52,6 @@ class _MapsScreenState extends State<MapsScreen> {
             ],
           ),
         ),
-        body: ListView(
-          children: [Text(widget.dataForMap.toString())],
-        ));
+        body: RSRPMapScreen(dataForMap: widget.listHistorique));
   }
 }
-// page[index]

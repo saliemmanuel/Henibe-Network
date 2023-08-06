@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import '../../config/palette.dart';
 import '../../provider/app_provider.dart';
-import '../../widget/custom_dialogue_card.dart';
 import '../../widget/custom_text.dart';
 import '../../widget/route.dart';
 import '../widget/chart.dart';
