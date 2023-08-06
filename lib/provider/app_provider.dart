@@ -4,15 +4,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:bheya_network_example/db/models/data_field.dart';
 import 'package:bheya_network_example/db/sqflite.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
 
 import 'package:bheya_network/bheya_network.dart';
 import 'package:bheya_network/cellResponse.dart';
 import 'package:bheya_network_example/widget/mobile.dart';
 import 'package:carrier_info_v3/carrier_info.dart';
 import 'package:csv/csv.dart';
-import 'package:excel/excel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +21,6 @@ import 'package:sim_data/sim_data.dart';
 import 'package:phoneinformations/phoneinformations.dart';
 
 import '../api/models/reponse.dart';
-import '../api/service.dart';
 
 class AppProvider extends ChangeNotifier {
   SignalStrength? _signalStrengthPlugin;
@@ -200,12 +196,10 @@ class AppProvider extends ChangeNotifier {
   providerDateTime(var context) {
     Timer.periodic(const Duration(seconds: 3), (timer) async {
       _date = DateTime.now().toString();
-      ServiceApi.fetchIPInformation(context);
       if (cellsResponse != null) {
         providerInsertDataField(data: cellsResponse!.primaryCellList![0]);
         providerListHistorique();
       }
-
       await initSimCardsData();
       await initPhoneInfo();
       await providerWifiCellularLevelStrength();
@@ -852,5 +846,18 @@ class AppProvider extends ChangeNotifier {
   providerListHistorique() async {
     _listHistorique = await getData();
     notifyListeners();
+  }
+
+  background() async {
+    _date = DateTime.now().toString();
+    if (cellsResponse != null) {
+      providerInsertDataField(data: cellsResponse!.primaryCellList![0]);
+      providerListHistorique();
+    }
+    await initSimCardsData();
+    await initPhoneInfo();
+    await providerWifiCellularLevelStrength();
+    await providerCellInfo();
+    await providerGetLocation();
   }
 }

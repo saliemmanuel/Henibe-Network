@@ -1,6 +1,8 @@
 import 'package:bheya_network_example/db/sqflite.dart';
 import 'package:bheya_network_example/provider/app_provider.dart';
+import 'package:bheya_network_example/view/home_item/rapport.dart';
 import 'package:bheya_network_example/widget/custom_dialogue_card.dart';
+import 'package:bheya_network_example/widget/route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../widget/custom_text.dart';
@@ -127,7 +129,9 @@ class PopUpMen extends StatelessWidget {
             Provider.of<AppProvider>(context, listen: false)
                 .generateCSV(context);
           }
-          if (value == "Rapport") {}
+          if (value == "Rapport") {
+            pushNewPage(const RapportScreen(), context);
+          }
           if (value == "Effacer") {
             customDialogue(
                 context, "Message", "Vous êtez sur de vouloire éffacer",

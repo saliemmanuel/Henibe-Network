@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:provider/provider.dart';
 import 'package:bheya_network_example/provider/app_provider.dart';
 import 'package:bheya_network_example/view/home_item/accueil.dart';
@@ -33,6 +34,11 @@ class _HomeNetworkStationState extends State<HomeNetworkStation>
     super.dispose();
   }
 
+  runBackService() async {
+    final service = FlutterBackgroundService();
+    var isRunning = await service.isRunning();
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (AppLifecycleState.detached == state) {
@@ -41,6 +47,7 @@ class _HomeNetworkStationState extends State<HomeNetworkStation>
       print("\n");
       print("\n");
       print("oooooooooooooooooooooooooooooooooDetached");
+      runBackService();
     }
 
     if (AppLifecycleState.inactive == state) {
@@ -49,6 +56,7 @@ class _HomeNetworkStationState extends State<HomeNetworkStation>
       print("\n");
       print("\n");
       print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa Inactive");
+      runBackService();
     }
 
     if (AppLifecycleState.paused == state) {
@@ -57,13 +65,10 @@ class _HomeNetworkStationState extends State<HomeNetworkStation>
       print("\n");
       print("\n");
       print("eeeeeeeeeeeeeeeeeeeeeeeeeeee Pause");
+      runBackService();
     }
 
     if (AppLifecycleState.resumed == state) {
-      print("\n");
-      print("\n");
-      print("\n");
-      print("\n");
       print("ffffffffffffffffffffffffffff Resume");
     }
 

@@ -55,6 +55,7 @@ class _ProfilState extends State<Profil> {
                     onPressed: () async {
                       final service = FlutterBackgroundService();
                       var isRunning = await service.isRunning();
+                      
                       if (isRunning) {
                         service.invoke("stopService");
                       } else {
