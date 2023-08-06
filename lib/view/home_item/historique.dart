@@ -1,6 +1,6 @@
 import 'package:bheya_network_example/db/sqflite.dart';
 import 'package:bheya_network_example/provider/app_provider.dart';
-import 'package:bheya_network_example/view/home_item/rapport.dart';
+import 'package:bheya_network_example/view/home_item/rapport/rapport.dart';
 import 'package:bheya_network_example/widget/custom_dialogue_card.dart';
 import 'package:bheya_network_example/widget/route.dart';
 import 'package:flutter/material.dart';

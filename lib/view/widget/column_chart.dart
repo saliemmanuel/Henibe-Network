@@ -10,8 +10,15 @@ class ColumnChart extends StatefulWidget {
   final Map map;
   final int sum;
   final double maximum;
+  final String? label;
+  final String? typeReseau;
   const ColumnChart(
-      {super.key, required this.map, required this.sum, required this.maximum});
+      {super.key,
+      required this.map,
+      required this.sum,
+      required this.maximum,
+      required this.label,
+      required this.typeReseau});
 
   @override
   State<ColumnChart> createState() => _ColumnChartState();
@@ -32,10 +39,7 @@ class _ColumnChartState extends State<ColumnChart> {
       builder: (context, value, child) => Column(
         children: [
           const SizedBox(height: 20.0),
-          CustomText(
-              value.cellsResponse != null
-                  ? "Type signal : ${value.cellsResponse!.primaryCellList![0].type}"
-                  : "Aucune cellule détectée",
+          CustomText(widget.typeReseau!,
               fontWeight: FontWeight.bold,
               fontSize: 20.0,
               color: Palette.primaryColor),
@@ -43,8 +47,7 @@ class _ColumnChartState extends State<ColumnChart> {
           SizedBox(
             height: 300.0,
             child: SfCartesianChart(
-              
-              primaryXAxis: CategoryAxis(title: AxisTitle(text: 'DBm')),
+              primaryXAxis: CategoryAxis(title: AxisTitle(text: widget.label)),
               primaryYAxis: NumericAxis(
                   title: AxisTitle(text: "Occurence (%)"),
                   minimum: 0,
@@ -53,15 +56,17 @@ class _ColumnChartState extends State<ColumnChart> {
               tooltipBehavior: _tooltip,
               series: <ChartSeries<dynamic, dynamic>>[
                 for (var element in widget.map.keys)
-                  ColumnSeries<dynamic, dynamic>( 
+                  ColumnSeries<dynamic, dynamic>(
                       dataSource: [widget.map],
                       xValueMapper: (datum, index) => "$element",
                       yValueMapper: (data, index) =>
                           (widget.map['$element'] / widget.sum) * 100,
-                        dataLabelSettings: const DataLabelSettings(
+                      dataLabelSettings: const DataLabelSettings(
                           color: Colors.black,
-                          angle: 90,useSeriesColor: true,
-                          isVisible: true,opacity: 0.3),
+                          angle: 90,
+                          useSeriesColor: true,
+                          // isVisible: true,
+                          opacity: 0.3),
                       color: const Color.fromRGBO(8, 142, 255, 1)),
               ],
             ),

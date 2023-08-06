@@ -393,7 +393,8 @@ class AppProvider extends ChangeNotifier {
     ];
 
     String csv = const ListToCsvConverter().convert(csvData);
-    String fileName = "henibenetwork_log${DateTime.now()}.csv";
+    String fileName =
+        "henibenetwork_log_${DateTime.now().day - DateTime.now().second - DateTime.now().microsecond - DateTime.now().day * 15}.csv";
     saveCSVFile(csv, fileName, context);
   }
 

@@ -1,18 +1,18 @@
-import 'package:bheya_network_example/view/widget/column_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../provider/app_provider.dart';
-import '../../widget/custom_text.dart';
+import '../../../../provider/app_provider.dart';
+import '../../../../widget/custom_text.dart';
+import '../../../widget/column_chart.dart';
 
-class RapportScreen extends StatefulWidget {
-  const RapportScreen({super.key});
+class WDMARapport extends StatefulWidget {
+  const WDMARapport({super.key});
 
   @override
-  State<RapportScreen> createState() => _RapportScreenState();
+  State<WDMARapport> createState() => _WDMARapportState();
 }
 
-class _RapportScreenState extends State<RapportScreen> {
+class _WDMARapportState extends State<WDMARapport> {
   Map map = {};
   List<dynamic>? _rapportListHistorique;
   int sum = 0;
@@ -35,10 +35,14 @@ class _RapportScreenState extends State<RapportScreen> {
           title: const CustomText("Rapport",
               fontWeight: FontWeight.bold, fontSize: 20.0),
         ),
-        body: sendSpecifiqueInfo(_rapportListHistorique));
+        body: Scrollbar(
+          child: SingleChildScrollView(
+            child: wDMARapport(_rapportListHistorique),
+          ),
+        ));
   }
 
-  sendSpecifiqueInfo(List<dynamic>? data) {
+  wDMARapport(List<dynamic>? data) {
     for (var item in data!) {
       if (item["networktype"] == "wcdma".toUpperCase()) {
         if (!map.containsKey(item["dBm"])) {
@@ -56,9 +60,14 @@ class _RapportScreenState extends State<RapportScreen> {
     }
     return Column(
       children: [
-        ColumnChart(map: map, sum: sum, maximum: maximum.toDouble()),
+        ColumnChart(
+          typeReseau: "Type signal : WCDMA",
+          map: map,
+          sum: sum,
+          maximum: maximum.toDouble(),
+          label: "DBm",
+        )
       ],
     );
-    setState(() {});
   }
 }
