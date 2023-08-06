@@ -25,7 +25,6 @@ class ColumnChart extends StatefulWidget {
 }
 
 class _ColumnChartState extends State<ColumnChart> {
-  List<ChartData>? data;
   late TooltipBehavior _tooltip;
   @override
   void initState() {
@@ -47,11 +46,16 @@ class _ColumnChartState extends State<ColumnChart> {
           SizedBox(
             height: 300.0,
             child: SfCartesianChart(
-              primaryXAxis: CategoryAxis(title: AxisTitle(text: widget.label)),
+              primaryXAxis: CategoryAxis(
+                  title: AxisTitle(
+                      text: widget.label,
+                      textStyle: const TextStyle(fontSize: 10.0))),
               primaryYAxis: NumericAxis(
-                  title: AxisTitle(text: "Occurence (%)"),
+                  title: AxisTitle(
+                      text: "Occurence (%)",
+                      textStyle: const TextStyle(fontSize: 10.0)),
                   minimum: 0,
-                  maximum: 100,
+                  maximum: 40,
                   interval: 10),
               tooltipBehavior: _tooltip,
               series: <ChartSeries<dynamic, dynamic>>[
@@ -75,11 +79,4 @@ class _ColumnChartState extends State<ColumnChart> {
       ),
     );
   }
-}
-
-class ChartData {
-  ChartData(this.x, this.y);
-
-  final String x;
-  final int y;
 }

@@ -61,12 +61,14 @@ class _TDSCDMARapportState extends State<TDSCDMARapport> {
     return Column(
       children: [
         ColumnChart(
-          typeReseau: "Type signal : TDSCDMA",
+          typeReseau: "Diagramme DBM du Signale TDSCDMA",
           map: map,
           sum: sum,
           maximum: maximum.toDouble(),
           label: "DBm",
-        )
+        ),
+        const SizedBox(height: 40.0)
+
       ],
     );
   }

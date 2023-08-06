@@ -61,12 +61,14 @@ class _NRRapportState extends State<NRRapport> {
     return Column(
       children: [
         ColumnChart(
-          typeReseau: "Type signal : NR",
+          typeReseau: "Diagramme DBM du Signale NR",
           map: map,
           sum: sum,
           maximum: maximum.toDouble(),
           label: "DBm",
-        )
+        ),
+        const SizedBox(height: 40.0)
+
       ],
     );
   }

@@ -13,7 +13,8 @@ class LTERapport extends StatefulWidget {
 }
 
 class _LTERapportState extends State<LTERapport> {
-  Map map = {};
+  Map mapRSRP = {};
+  Map mapRSRQ = {};
   List<dynamic>? _rapportListHistorique;
   int sum = 0;
   @override
@@ -44,36 +45,51 @@ class _LTERapportState extends State<LTERapport> {
 
   gsmRapport(List<dynamic>? data) {
     for (var item in data!) {
-      if (item["networktype"] == "lte".toUpperCase()) {
-        if (!map.containsKey(item["dBm"])) {
-          map[item["dBm"]] = 1;
+      if (item["networktype"] == "gsm".toUpperCase()) {
+        if (!mapRSRP.containsKey(item["rSRP"])) {
+          mapRSRP[item["rSRP"]] = 1;
         } else {
-          map[item["dBm"]] += 1;
+          mapRSRP[item["rSRP"]] += 1;
+        }
+        if (!mapRSRQ.containsKey(item["rSRQ"])) {
+          mapRSRQ[item["rSRQ"]] = 1;
+        } else {
+          mapRSRQ[item["rSRQ"]] += 1;
         }
       }
     }
-    Iterable<dynamic> values = map.values;
-    int sum = values.reduce((sum, value) => sum + value);
-    int maximum = values.first;
+
+    Iterable<dynamic> values = mapRSRP.values;
+    int sumRSRP = values.reduce((sum, value) => sum + value);
+    int maximumRSRP = values.first;
     for (var element in values) {
-      if (maximum < element) maximum = element;
+      if (maximumRSRP < element) maximumRSRP = element;
+    }
+
+    Iterable<dynamic> valuesRSRP = mapRSRQ.values;
+    int sumRSRQ = valuesRSRP.reduce((sum, value) => sum + value);
+    int maximumRSRQ = valuesRSRP.first;
+    for (var element in values) {
+      if (maximumRSRQ < element) maximumRSRQ = element;
     }
     return Column(
       children: [
         ColumnChart(
-          typeReseau: "Type signal : LTE",
-          map: map,
-          sum: sum,
-          maximum: maximum.toDouble(),
+          typeReseau: "Diagramme RSRP du  Signale LTE",
+          map: mapRSRP,
+          sum: sumRSRP,
+          maximum: maximumRSRP.toDouble(),
           label: 'RSRP',
         ),
         ColumnChart(
-          typeReseau: "Type signal : LTE",
-          map: map,
-          sum: sum,
-          maximum: maximum.toDouble(),
+          typeReseau: "Diagramme RSRQ Signale LTE",
+          map: mapRSRQ,
+          sum: sumRSRQ,
+          maximum: maximumRSRQ.toDouble(),
           label: 'RSRQ',
-        )
+        ),
+        const SizedBox(height: 40.0)
+
       ],
     );
   }

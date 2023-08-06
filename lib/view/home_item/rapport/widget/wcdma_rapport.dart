@@ -61,12 +61,13 @@ class _WDMARapportState extends State<WDMARapport> {
     return Column(
       children: [
         ColumnChart(
-          typeReseau: "Type signal : WCDMA",
+          typeReseau: "Diagramme DBM du Signal WCDMA",
           map: map,
           sum: sum,
           maximum: maximum.toDouble(),
           label: "DBm",
-        )
+        ),
+        const SizedBox(height: 40.0)
       ],
     );
   }

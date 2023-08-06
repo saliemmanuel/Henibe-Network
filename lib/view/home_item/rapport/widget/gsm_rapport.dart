@@ -79,14 +79,15 @@ class _GSMRapportState extends State<GSMRapport> {
           sum: sum,
           maximum: maximum.toDouble(),
           label: "DBm",
-          typeReseau: "Type signal : GSM",
+          typeReseau: "Diagramme DBM du Signale GSM",
         ),
         ColumnChart(
-            typeReseau: "Type signal : GSM",
+            typeReseau: "Diagramme Asu du Signale GSM",
             map: mapAsu,
             sum: sumAsu,
             maximum: maximumAsu.toDouble(),
             label: "Asu"),
+        const SizedBox(height: 40.0)
       ],
     );
   }

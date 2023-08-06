@@ -1,10 +1,13 @@
+import 'package:bheya_network_example/view/home_item/rapport/rapport.dart';
 import 'package:bheya_network_example/view/widget/legend_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../config/palette.dart';
 import '../../provider/app_provider.dart';
+import '../../widget/custom_dialogue_card.dart';
 import '../../widget/custom_text.dart';
+import '../../widget/route.dart';
 import '../widget/chart.dart';
 import '../widget/primary_cell_widget.dart';
 
@@ -21,11 +24,26 @@ class _GraphiqueState extends State<Graphique> {
     return Scaffold(
       body: Scaffold(
         appBar: AppBar(
-            title: const CustomText(
-          "Graphique",
-          fontWeight: FontWeight.bold,
-          fontSize: 20.0,
-        )),
+          title: const CustomText(
+            "Graphique",
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+          ),
+          actions: const [
+            PopUpMen(
+              menuList: [
+                PopupMenuItem(
+                    value: "Rapport",
+                    height: 8.0,
+                    child: ListTile(
+                      leading: Icon(Icons.map),
+                      title: Text("Rapport"),
+                    )),
+              ],
+              icon: Icon(Icons.more_vert),
+            ),
+          ],
+        ),
         body: Scrollbar(
           child: SingleChildScrollView(
             child: Consumer<AppProvider>(
@@ -39,7 +57,7 @@ class _GraphiqueState extends State<Graphique> {
                       const CustomText("Information de la sim",
                           fontWeight: FontWeight.bold,
                           fontSize: 20.0,
-                          color: Palette.primaryColor),                      
+                          color: Palette.primaryColor),
                       const Divider(),
                       CustomText('networkISO: ${value.networkCountryISO}'),
                       const Divider(),
@@ -80,8 +98,7 @@ class _GraphiqueState extends State<Graphique> {
                           fontSize: 20.0,
                           color: Palette.primaryColor),
                       const Divider(),
-          
-                          CustomText('DeviceId: ${value.subscriberID}'),
+                      CustomText('DeviceId: ${value.subscriberID}'),
                       const Divider(),
                       CustomText('Version: ${value.andoidVersion}'),
                       const Divider(),
@@ -423,5 +440,27 @@ class _GraphiqueState extends State<Graphique> {
       );
     }
     setState(() {});
+  }
+}
+
+class PopUpMen extends StatelessWidget {
+  final List<PopupMenuEntry> menuList;
+  final Widget? icon;
+  const PopUpMen({Key? key, required this.menuList, this.icon})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+        onSelected: (value) {
+          if (value == "Rapport") {
+            pushNewPage(const RapportScreen(), context);
+          }
+        },
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        itemBuilder: ((context) => menuList),
+        icon: icon);
   }
 }

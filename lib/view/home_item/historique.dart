@@ -1,5 +1,6 @@
 import 'package:bheya_network_example/db/sqflite.dart';
 import 'package:bheya_network_example/provider/app_provider.dart';
+import 'package:bheya_network_example/view/home_item/map/map.dart';
 import 'package:bheya_network_example/view/home_item/rapport/rapport.dart';
 import 'package:bheya_network_example/widget/custom_dialogue_card.dart';
 import 'package:bheya_network_example/widget/route.dart';
@@ -22,10 +23,8 @@ class _HistoriqueState extends State<Historique> {
       appBar: AppBar(
         title: const CustomText("Historique",
             fontWeight: FontWeight.bold, fontSize: 20.0),
-        actions: [
-          IconButton.filled(
-              tooltip: "Map", onPressed: () {}, icon: const Icon(Icons.map)),
-          const PopUpMen(
+        actions: const [
+          PopUpMen(
             menuList: [
               PopupMenuItem(
                   value: "Telecharger_csv",
@@ -35,11 +34,11 @@ class _HistoriqueState extends State<Historique> {
                     title: Text("Télécharger (.csv)"),
                   )),
               PopupMenuItem(
-                  value: "Rapport",
+                  value: "map",
                   height: 8.0,
                   child: ListTile(
-                    leading: Icon(Icons.upload_file_sharp),
-                    title: Text("Rapport"),
+                    leading: Icon(Icons.map),
+                    title: Text("Aller sur la carte"),
                   )),
               PopupMenuItem(
                   value: "Effacer",
@@ -129,8 +128,12 @@ class PopUpMen extends StatelessWidget {
             Provider.of<AppProvider>(context, listen: false)
                 .generateCSV(context);
           }
-          if (value == "Rapport") {
-            pushNewPage(const RapportScreen(), context);
+          if (value == "map") {
+            pushNewPage(
+                MapsScreen(
+                    dataForMap: Provider.of<AppProvider>(context, listen: false)
+                        .listHistorique),
+                context);
           }
           if (value == "Effacer") {
             customDialogue(

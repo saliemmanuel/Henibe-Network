@@ -65,8 +65,9 @@ class _CDMARapportState extends State<CDMARapport> {
           sum: sum,
           maximum: maximum.toDouble(),
           label: 'DBm',
-          typeReseau: "Type signal : CDMA",
-        )
+          typeReseau: "Diagramme DBm du SignaleCDMA",
+        ),
+        const SizedBox(height: 40.0)
       ],
     );
   }
