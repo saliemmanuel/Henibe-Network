@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
-
 import '../../config/palette.dart';
 import '../../widget/custom_text.dart';
 
@@ -45,31 +44,31 @@ class _ProfilState extends State<Profil> {
       ),
       body: ListView(
         children: [
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: Card(
-          //       color: !isRunning ? Colors.red : Palette.primaryColor,
-          //       child: MaterialButton(
-          //           child: Text(text,
-          //               style: const TextStyle(
-          //                   fontSize: 18.0, color: Colors.white)),
-          //           onPressed: () async {
-          //             final service = FlutterBackgroundService();
-          //             var isRunning = await service.isRunning();
-          //             if (isRunning) {
-          //               service.invoke("stopService");
-          //             } else {
-          //               service.startService();
-          //             }
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+                color: !isRunning ? Colors.red : Palette.primaryColor,
+                child: MaterialButton(
+                    child: Text(text,
+                        style: const TextStyle(
+                            fontSize: 18.0, color: Colors.white)),
+                    onPressed: () async {
+                      final service = FlutterBackgroundService();
+                      var isRunning = await service.isRunning();
+                      if (isRunning) {
+                        service.invoke("stopService");
+                      } else {
+                        service.startService();
+                      }
 
-          //             if (!isRunning) {
-          //               text = "Arrêter le service";
-          //             } else {
-          //               text = "Lancer le service";
-          //             }
-          //             setState(() {});
-          //           })),
-          // )
+                      if (!isRunning) {
+                        text = "Arrêter le service";
+                      } else {
+                        text = "Lancer le service";
+                      }
+                      setState(() {});
+                    })),
+          )
         ],
       ),
     );

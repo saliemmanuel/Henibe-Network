@@ -17,8 +17,58 @@ class HomeNetworkStation extends StatefulWidget {
   State<HomeNetworkStation> createState() => _HomeNetworkStationState();
 }
 
-class _HomeNetworkStationState extends State<HomeNetworkStation> {
+class _HomeNetworkStationState extends State<HomeNetworkStation>
+    with WidgetsBindingObserver {
   var topIndex = 0;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (AppLifecycleState.detached == state) {
+      print("\n");
+      print("\n");
+      print("\n");
+      print("\n");
+      print("oooooooooooooooooooooooooooooooooDetached");
+    }
+
+    if (AppLifecycleState.inactive == state) {
+      print("\n");
+      print("\n");
+      print("\n");
+      print("\n");
+      print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa Inactive");
+    }
+
+    if (AppLifecycleState.paused == state) {
+      print("\n");
+      print("\n");
+      print("\n");
+      print("\n");
+      print("eeeeeeeeeeeeeeeeeeeeeeeeeeee Pause");
+    }
+
+    if (AppLifecycleState.resumed == state) {
+      print("\n");
+      print("\n");
+      print("\n");
+      print("\n");
+      print("ffffffffffffffffffffffffffff Resume");
+    }
+
+    super.didChangeAppLifecycleState(state);
+  }
 
   @override
   Widget build(BuildContext context) {

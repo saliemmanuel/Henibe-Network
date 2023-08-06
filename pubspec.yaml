@@ -54,7 +54,11 @@ dependencies:
   excel: ^2.1.0
   csv: ^5.0.2
   sqflite: ^2.3.0
+  flutter_background_service_android: ^4.0.1
   flutter_background_service: ^3.0.1
+  device_info_plus: ^9.0.3
+  flutter_local_notifications: ^15.1.0+1
+  shared_preferences: ^2.2.0
 
 dev_dependencies:
   integration_test:

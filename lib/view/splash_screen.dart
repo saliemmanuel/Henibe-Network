@@ -19,6 +19,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class SplashScreenState extends State<SplashScreen> {
+    
+
   @override
   void initState() {
     super.initState();
