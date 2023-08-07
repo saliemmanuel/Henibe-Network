@@ -7,6 +7,7 @@ import 'package:bheya_network_example/view/home_item/cellule.dart';
 import 'package:bheya_network_example/view/home_item/graphique.dart';
 import 'package:bheya_network_example/view/home_item/historique.dart';
 import '../config/palette.dart';
+import 'home_item/map/map.dart';
 import 'home_item/profil.dart';
 
 class HomeNetworkStation extends StatefulWidget {
@@ -83,55 +84,84 @@ class _HomeNetworkStationState extends State<HomeNetworkStation>
     Provider.of<AppProvider>(context, listen: false).providerGetLocation();
     Provider.of<AppProvider>(context, listen: false).providerCheckGps();
     Provider.of<AppProvider>(context, listen: false).testSpedd();
-    return Scaffold(
-      body: [
-        const Accueil(),
-        const Cellule(),
-        const Graphique(),
-        const Historique(),
-        Profil(onStart: widget.onStart)
-      ][topIndex],
-      bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.shifting,
-          enableFeedback: true,
-          useLegacyColorScheme: true,
-          backgroundColor: Colors.white,
-          selectedItemColor: Palette.primaryColor,
-          unselectedItemColor: Colors.grey,
-          unselectedLabelStyle: const TextStyle(color: Colors.grey),
-          showUnselectedLabels: true,
-          currentIndex: topIndex,
-          onTap: (i) {
-            topIndex = i;
-            setState(() {});
-          },
-          items: const [
-            BottomNavigationBarItem(
-              tooltip: "Accueil",
-              icon: Icon(Icons.home),
-              label: "Accueil",
-            ),
-            BottomNavigationBarItem(
-              tooltip: "Cellule",
-              icon: Icon(Icons.attractions_rounded),
-              label: "Cellule",
-            ),
-            BottomNavigationBarItem(
-              tooltip: "Graphique",
-              icon: Icon(Icons.wysiwyg),
-              label: "Graphique",
-            ),
-            BottomNavigationBarItem(
-              tooltip: "Historique",
-              icon: Icon(Icons.history),
-              label: "Historique",
-            ),
-            BottomNavigationBarItem(
-              tooltip: "Profil",
-              icon: Icon(Icons.person),
-              label: "Profil",
-            ),
-          ]),
+    return Consumer<AppProvider>(
+      builder: (context, value, child) => Scaffold(
+        body: [
+          const Accueil(),
+          const Cellule(),
+          const Graphique(),
+          const Historique(),
+          MapsScreen(listHistorique: value.listHistorique)
+        ][topIndex],
+        bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.shifting,
+            enableFeedback: true,
+            useLegacyColorScheme: true,
+            backgroundColor: Colors.white,
+            selectedItemColor: Palette.primaryColor,
+            unselectedItemColor: Colors.grey,
+            unselectedLabelStyle: const TextStyle(color: Colors.grey),
+            showUnselectedLabels: true,
+            currentIndex: topIndex,
+            onTap: (i) {
+              topIndex = i;
+              setState(() {});
+            },
+            items: const [
+              BottomNavigationBarItem(
+                tooltip: "Accueil",
+                icon: Icon(Icons.home),
+                label: "Accueil",
+              ),
+              BottomNavigationBarItem(
+                tooltip: "Cellule",
+                icon: Icon(Icons.attractions_rounded),
+                label: "Cellule",
+              ),
+              BottomNavigationBarItem(
+                tooltip: "Graphique",
+                icon: Icon(Icons.wysiwyg),
+                label: "Graphique",
+              ),
+              BottomNavigationBarItem(
+                tooltip: "Historique",
+                icon: Icon(Icons.history),
+                label: "Historique",
+              ),
+              BottomNavigationBarItem(
+                tooltip: "Carte",
+                icon: Icon(Icons.map),
+                label: "Carte",
+              ),
+            ]),
+      ),
     );
   }
 }
+
+// Consumer<AppProvider>(
+//       builder: (context, vall, child) => PopupMenuButton(
+//           onSelected: (value) {
+//             if (value == "Telecharger_csv") {
+//               Provider.of<AppProvider>(context, listen: false)
+//                   .generateCSV(context);
+//             }
+//             if (value == "map") {
+//               pushNewPage(
+//                   MapsScreen(listHistorique: vall.listHistorique), context);
+//             }
+//             if (value == "Effacer") {
+//               customDialogue(
+//                   context, "Message", "Vous êtez sur de vouloire tous éffacer?",
+//                   onPressed: () {
+//                 deleteDatabase(context);
+//                 Navigator.pop(context);
+//               }, text: "Confirmer");
+//             }
+//           },
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(10.0),
+//           ),
+//           itemBuilder: ((context) => menuList),
+//           icon: icon),
+//     )

@@ -67,9 +67,8 @@ class _ColumnChartState extends State<ColumnChart> {
                           (widget.map['$element'] / widget.sum) * 100,
                       dataLabelSettings: const DataLabelSettings(
                           color: Colors.black,
-                          angle: 90,
                           useSeriesColor: true,
-                          // isVisible: true,
+                          isVisible: true,
                           opacity: 0.3),
                       color: const Color.fromRGBO(8, 142, 255, 1)),
               ],

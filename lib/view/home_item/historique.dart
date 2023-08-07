@@ -32,13 +32,7 @@ class _HistoriqueState extends State<Historique> {
                     leading: Icon(Icons.save_alt_rounded),
                     title: Text("Télécharger (.csv)"),
                   )),
-              PopupMenuItem(
-                  value: "map",
-                  height: 8.0,
-                  child: ListTile(
-                    leading: Icon(Icons.map),
-                    title: Text("Aller sur la carte"),
-                  )),
+             
               PopupMenuItem(
                   value: "Effacer",
                   height: 8.0,
@@ -128,13 +122,10 @@ class PopUpMen extends StatelessWidget {
               Provider.of<AppProvider>(context, listen: false)
                   .generateCSV(context);
             }
-            if (value == "map") {
-              pushNewPage(
-                  MapsScreen(listHistorique: vall.listHistorique), context);
-            }
+
             if (value == "Effacer") {
               customDialogue(
-                  context, "Message", "Vous êtez sur de vouloire tous éffacer?",
+                  context, "Message", "Vous êtez sur de vouloire tous éffacer",
                   onPressed: () {
                 deleteDatabase(context);
                 Navigator.pop(context);

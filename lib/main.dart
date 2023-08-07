@@ -17,7 +17,7 @@ import 'provider/app_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initializeService();
+  // await initializeService();
   await initDatabase(dbName: "henibe_network.db");
   runApp(MultiProvider(
     providers: [
